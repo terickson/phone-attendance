@@ -1,0 +1,73 @@
+package com.dynalias.erickson.phoneattendance.ui.absent
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.ListFragment
+import com.dynalias.erickson.phoneattendance.R
+import com.dynalias.erickson.phoneattendance.databinding.FragmentAbsentBinding
+
+
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "class_name"
+private const val ARG_PARAM2 = "absent_list"
+
+/**
+ * A simple [Fragment] subclass.
+ * Use the [AbsentFragment.newInstance] factory method to
+ * create an instance of this fragment.
+ */
+
+class AbsentFragment : ListFragment() {
+    private var className: String? = null
+    private var absentList = ArrayList<String>()
+    private var _binding: FragmentAbsentBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            className = it.getString(ARG_PARAM1)
+            absentList = it.getStringArrayList(ARG_PARAM2) as ArrayList<String>
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        _binding = FragmentAbsentBinding.inflate(inflater, container, false)
+
+        val root: View = binding.root
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(inflater.context, android.R.layout.simple_list_item_1, absentList)
+        setListAdapter(adapter)
+        return root
+    }
+
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment AbsentFragment.
+         */
+        @JvmStatic
+        fun newInstance(param1: String, param2: ArrayList<String>) =
+            AbsentFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putStringArrayList(ARG_PARAM2, param2)
+                }
+            }
+    }
+}

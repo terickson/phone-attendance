@@ -4,11 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/main_cam_layout"
     tools:context=".ui.camera.CameraFragment">
 
     <androidx.camera.view.PreviewView
         android:id="@+id/title_camera"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="4dp"
+        tools:layout_editor_absoluteY="2dp">
+    </androidx.camera.view.PreviewView>
+
+    <TextView
+        android:id="@+id/scans_info"
+        android:layout_width="366dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="70dp"
+        android:elevation="2dp"
+        android:gravity="center_horizontal"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <Button
+        android:id="@+id/done_button"
+        android:layout_width="87dp"
+        android:layout_height="82dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginBottom="49dp"
+        android:elevation="2dp"
+        android:text="@string/done"
+        app:layout_constraintBottom_toBottomOf="@+id/title_camera"
+        app:layout_constraintEnd_toStartOf="@+id/title_camera"
+        app:layout_constraintHorizontal_bias="0.55"
+        app:layout_constraintStart_toEndOf="@+id/title_camera" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vertical_centerline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".50" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
