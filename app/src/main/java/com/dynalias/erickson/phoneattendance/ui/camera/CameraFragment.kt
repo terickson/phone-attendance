@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
@@ -14,12 +15,16 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.dynalias.erickson.phoneattendance.R
 import com.dynalias.erickson.phoneattendance.databinding.CameraLayoutBinding
+import com.dynalias.erickson.phoneattendance.services.BarcodeAnalyzer
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicBoolean
+
 
 
 class CameraFragment : Fragment() {
 
+    private val processingBarcode = AtomicBoolean(false)
     private var _binding: CameraLayoutBinding? = null
     private lateinit var safeContext: Context
     private lateinit var cameraExecutor: ExecutorService
@@ -58,6 +63,16 @@ private fun startCamera() {
             .also {
                 it.setSurfaceProvider(previewView?.surfaceProvider)
             }
+        // Setup the ImageAnalyzer for the ImageAnalysis use case
+        val imageAnalysis = ImageAnalysis.Builder()
+            .build()
+            .also {
+                it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { barcode ->
+                    //if (processingBarcode.compareAndSet(false, true)) {
+                        Log.i("PhoneAttendance", barcode)
+                    //}
+                })
+            }
 
         // Select back camera as a default
         val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
@@ -68,7 +83,7 @@ private fun startCamera() {
 
             // Bind use cases to camera
             cameraProvider.bindToLifecycle(
-                this, cameraSelector, preview)
+                this, cameraSelector, preview, imageAnalysis)
 
         } catch(exc: Exception) {
             Log.e("PhoneAttendance", "Use case binding failed", exc)
@@ -76,6 +91,7 @@ private fun startCamera() {
 
     }, ContextCompat.getMainExecutor(safeContext))
 }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
