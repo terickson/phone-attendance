@@ -11,7 +11,6 @@ import com.dynalias.erickson.phoneattendance.R
 import com.dynalias.erickson.phoneattendance.databinding.FragmentAbsentBinding
 
 
-// TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "class_name"
 private const val ARG_PARAM2 = "absent_list"
@@ -54,6 +53,11 @@ class AbsentFragment : ListFragment() {
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(inflater.context, android.R.layout.simple_list_item_1, absentList)
         setListAdapter(adapter)
         return root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

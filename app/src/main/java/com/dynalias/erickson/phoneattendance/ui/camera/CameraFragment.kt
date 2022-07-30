@@ -23,6 +23,10 @@ import java.util.concurrent.atomic.AtomicBoolean
 import com.dynalias.erickson.phoneattendance.R
 import com.dynalias.erickson.phoneattendance.ui.absent.AbsentFragment
 
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "class_name"
+private const val ARG_PARAM2 = "roster"
+
 
 class CameraFragment : Fragment() {
 
@@ -37,7 +41,8 @@ class CameraFragment : Fragment() {
 
     //Used for information update
     private var className: String = ""
-    private var classRoster = mutableMapOf<Int, String>()
+    private var classRoster = ArrayList<String>()
+    private var rosterArr:Array<out String> ?= null
     private var maxClassId: Int = 0
     private var absentSet = mutableSetOf<String>()
 
@@ -49,12 +54,22 @@ class CameraFragment : Fragment() {
         safeContext = context
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            className = it.getString(ARG_PARAM1) as String
+            rosterArr = it.getStringArray(ARG_PARAM2)
+            if(rosterArr != null) {
+                classRoster = rosterArr?.toCollection(ArrayList()) as ArrayList<String>
+            }
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         _binding = CameraLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        className = "AS Period 1"
-        classRoster.putAll(setOf(1 to "Katie", 2 to "Student 2", 3 to "Student 3", 4 to "Student 4"))
+
         maxClassId = classRoster.size
         setScanText()
 
@@ -106,7 +121,7 @@ private fun startCamera() {
                 it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { barcode ->
                         Log.i("PhoneAttendance", barcode)
                         if(barcode.toInt() <= maxClassId) {
-                            val student = classRoster.get(barcode.toInt())
+                            val student = classRoster.get(barcode.toInt() - 1)
                             if(student != null){
                                 absentSet.add(student)
                                 setScanText()
