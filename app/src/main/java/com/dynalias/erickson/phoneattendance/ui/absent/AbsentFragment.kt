@@ -1,13 +1,15 @@
 package com.dynalias.erickson.phoneattendance.ui.absent
 
+import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.ListFragment
-import com.dynalias.erickson.phoneattendance.R
+import androidx.navigation.fragment.findNavController
 import com.dynalias.erickson.phoneattendance.databinding.FragmentAbsentBinding
 
 
@@ -36,6 +38,17 @@ class AbsentFragment : ListFragment() {
             className = it.getString(ARG_PARAM1)
             absentArr = it.getStringArray(ARG_PARAM2)
         }
+
+        val nvctrl = this.findNavController()
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true /* enabled by default */) {
+                override fun handleOnBackPressed() {
+                    val action = AbsentFragmentDirections.actionBackToHome()
+                    nvctrl.navigate(action)
+
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     override fun onCreateView(
@@ -49,9 +62,13 @@ class AbsentFragment : ListFragment() {
         if(absentList != null) {
             absentList = absentArr?.toCollection(ArrayList()) as ArrayList<String>
         }
-        //absentList = absentArr?.toCollection(ArrayList())
+        //set className
+        binding.className.text = className
+
+        //add adapter
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(inflater.context, android.R.layout.simple_list_item_1, absentList)
         setListAdapter(adapter)
+
         return root
     }
 

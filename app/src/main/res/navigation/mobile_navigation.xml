@@ -42,6 +42,9 @@
         <argument
             android:name="absent_list"
             app:argType="string[]" />
+        <action
+            android:id="@+id/action_back_to_home"
+            app:destination="@id/navigation_home" />
     </fragment>
 
     <fragment

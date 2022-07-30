@@ -24,14 +24,8 @@ class HomeFragment : ListFragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        _binding = FragmentAbsentBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         //TODO These will be replaced by csv data in the long run
         classList.addAll(listOf("Period 1", "Period 2", "Period 4", "Period 8") )
         for(cl in classList) {
@@ -42,6 +36,16 @@ class HomeFragment : ListFragment() {
             }
             classData.put(cl, roster.toTypedArray())
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        _binding = FragmentAbsentBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(inflater.context, R.layout.simple_list_item_1, classList)
         setListAdapter(adapter)
 
