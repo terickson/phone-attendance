@@ -15,7 +15,24 @@
         android:id="@+id/navigation_camera"
         android:name="com.dynalias.erickson.phoneattendance.ui.camera.CameraFragment"
         android:label="@string/title_camera"
-        tools:layout="@layout/camera_layout" />
+        tools:layout="@layout/camera_layout">
+        <action
+            android:id="@+id/action_camera_to_absent"
+            app:destination="@id/navigation_absent" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_absent"
+        android:name="com.dynalias.erickson.phoneattendance.ui.absent.AbsentFragment"
+        android:label="@string/title_absent"
+        tools:layout="@layout/fragment_absent" >
+        <argument
+            android:name="class_name"
+            app:argType="string" />
+        <argument
+            android:name="absent_list"
+            app:argType="string[]" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"

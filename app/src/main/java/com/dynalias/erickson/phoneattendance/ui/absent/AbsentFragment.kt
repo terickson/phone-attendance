@@ -24,8 +24,8 @@ private const val ARG_PARAM2 = "absent_list"
 
 class AbsentFragment : ListFragment() {
     private var className: String? = null
-    private var absentList = ArrayList<String>()
     private var _binding: FragmentAbsentBinding? = null
+    private var absentArr:Array<out String> ?= null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -35,7 +35,7 @@ class AbsentFragment : ListFragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             className = it.getString(ARG_PARAM1)
-            absentList = it.getStringArrayList(ARG_PARAM2) as ArrayList<String>
+            absentArr = it.getStringArray(ARG_PARAM2)
         }
     }
 
@@ -45,8 +45,12 @@ class AbsentFragment : ListFragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentAbsentBinding.inflate(inflater, container, false)
-
         val root: View = binding.root
+        var absentList = ArrayList<String>()
+        if(absentList != null) {
+            absentList = absentArr?.toCollection(ArrayList()) as ArrayList<String>
+        }
+        //absentList = absentArr?.toCollection(ArrayList())
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(inflater.context, android.R.layout.simple_list_item_1, absentList)
         setListAdapter(adapter)
         return root

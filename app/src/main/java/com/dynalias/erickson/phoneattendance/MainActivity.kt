@@ -76,10 +76,6 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    fun switchToSecondFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().replace(R.id.container, fragment).addToBackStack("tag").commit()
-    }
-
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS =

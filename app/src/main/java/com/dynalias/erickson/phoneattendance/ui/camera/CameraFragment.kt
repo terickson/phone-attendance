@@ -59,12 +59,8 @@ class CameraFragment : Fragment() {
         setScanText()
 
         binding.doneButton.setOnClickListener {
-            val fragment: Fragment = AbsentFragment.newInstance(className,
-                convert(absentSet) as ArrayList<String>)
-            val myactivity = activity as MainActivity
-          //findNavController().navigate()
-           myactivity.switchToSecondFragment(fragment)
-           //parentFragmentManager.beginTransaction().replace(R.id.main_cam_layout, fragment).hide(this).commit()
+            val action = CameraFragmentDirections.actionCameraToAbsent(className, absentSet.toTypedArray())
+            this.findNavController().navigate(action)
         }
 
         return root
