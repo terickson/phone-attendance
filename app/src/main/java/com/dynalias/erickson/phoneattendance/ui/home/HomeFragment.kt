@@ -10,13 +10,12 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.fragment.app.ListFragment
 import androidx.navigation.fragment.findNavController
-import com.dynalias.erickson.phoneattendance.databinding.FragmentAbsentBinding
-import com.dynalias.erickson.phoneattendance.ui.camera.CameraFragmentDirections
+import com.dynalias.erickson.phoneattendance.databinding.FragmentHomeBinding
 
 
 class HomeFragment : ListFragment() {
 
-    private var _binding: FragmentAbsentBinding? = null
+    private var _binding: FragmentHomeBinding? = null
     private var classList = ArrayList<String>()
     private var classData = mutableMapOf<String, Array<String>>()
 
@@ -43,7 +42,7 @@ class HomeFragment : ListFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentAbsentBinding.inflate(inflater, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(inflater.context, R.layout.simple_list_item_1, classList)

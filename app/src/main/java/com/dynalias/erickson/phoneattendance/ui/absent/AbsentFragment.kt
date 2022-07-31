@@ -1,7 +1,9 @@
 package com.dynalias.erickson.phoneattendance.ui.absent
 
 import android.R
+import android.content.Intent
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.ListFragment
 import androidx.navigation.fragment.findNavController
 import com.dynalias.erickson.phoneattendance.databinding.FragmentAbsentBinding
+import com.dynalias.erickson.phoneattendance.ui.camera.CameraFragmentDirections
 
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -68,6 +71,23 @@ class AbsentFragment : ListFragment() {
         //add adapter
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(inflater.context, android.R.layout.simple_list_item_1, absentList)
         setListAdapter(adapter)
+
+        //Add Share Button
+        binding.share.setOnClickListener() {
+            val sendIntent: Intent = Intent().apply {
+                var body = ""
+                for(student in absentList){
+                    body += student+ "<br/>"
+                }
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_SUBJECT, "ABSENT: " + className)
+                putExtra(Intent.EXTRA_TEXT,Html.fromHtml(body, 0))
+                type = "text/html"
+            }
+
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
+        }
 
         return root
     }
