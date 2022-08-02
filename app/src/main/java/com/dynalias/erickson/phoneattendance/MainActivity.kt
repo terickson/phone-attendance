@@ -1,23 +1,27 @@
 package com.dynalias.erickson.phoneattendance
 
+
+import android.Manifest
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.provider.OpenableColumns
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.net.toFile
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.dynalias.erickson.phoneattendance.databinding.ActivityMainBinding
-
-
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-
-import android.widget.Toast
-import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.io.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        checkReceivedIntent()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -65,7 +70,39 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun Uri.getName(context: Context): String {
+        val returnCursor = context.contentResolver.query(this, null, null, null, null)
+        val nameIndex = returnCursor?.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+        returnCursor?.moveToFirst()
+        val fileName = returnCursor?.getString(nameIndex as Int)
+        returnCursor?.close()
+        return fileName as String
+    }
 
+    private fun checkReceivedIntent() {
+        Log.i("Phone Attendance", "Intent Received")
+        val contentReceivedIntent = intent
+        val intentAction = contentReceivedIntent.action
+        val intentType = contentReceivedIntent.type
+
+        if (Intent.ACTION_VIEW == intentAction && intentType != null) {
+            val uri = contentReceivedIntent?.data as Uri
+            val fileName = uri.getName(this)
+            Log.i("Phone Attendance", fileName)
+            val fileOutputStream = openFileOutput(fileName, Context.MODE_PRIVATE)
+            contentResolver.openInputStream(uri).use { stream ->
+                fileOutputStream.write(stream?.readBytes() as ByteArray)
+            }
+        }
+    }
+
+    /*
+    val files = filesDir.listFiles()
+            Log.i("Phone Attendance", files.size.toString())
+            files?.mapIndexed { index, item ->
+                Log.i("Phone Attendance", item.name as String)
+            }
+     */
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(

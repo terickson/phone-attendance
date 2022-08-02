@@ -51,5 +51,25 @@
         android:id="@+id/navigation_edit"
         android:name="com.dynalias.erickson.phoneattendance.ui.edit.EditFragment"
         android:label="@string/title_edit"
-        tools:layout="@layout/fragment_edit" />
+        tools:layout="@layout/fragment_edit" >
+        <action
+            android:id="@+id/action_edit_to_file"
+            app:destination="@id/navigation_file" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_file"
+        android:name="com.dynalias.erickson.phoneattendance.ui.file.FileFragment"
+        android:label="@string/title_file"
+        tools:layout="@layout/fragment_file" >
+        <argument
+            android:name="file_name"
+            app:argType="string" />
+        <argument
+            android:name="file_list"
+            app:argType="string[]" />
+        <action
+            android:id="@+id/action_back_to_edit"
+            app:destination="@id/navigation_edit" />
+    </fragment>
 </navigation>
