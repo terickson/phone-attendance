@@ -120,11 +120,13 @@ private fun startCamera() {
             .also {
                 it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { barcode ->
                         Log.i("PhoneAttendance", barcode)
-                        if(barcode.toInt() <= maxClassId) {
-                            val student = classRoster.get(barcode.toInt() - 1)
-                            if(student != null){
-                                absentSet.add(student)
-                                setScanText()
+                        if(barcode.toDoubleOrNull() != null) {
+                            if(barcode.toInt() <= maxClassId) {
+                                val student = classRoster.get(barcode.toInt() - 1)
+                                if (student != null) {
+                                    absentSet.add(student)
+                                    setScanText()
+                                }
                             }
                         }
                 })
