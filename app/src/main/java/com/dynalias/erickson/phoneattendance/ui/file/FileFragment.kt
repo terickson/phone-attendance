@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.ListFragment
 import androidx.navigation.fragment.findNavController
@@ -15,7 +16,8 @@ import java.io.File
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "file_name"
-private const val ARG_PARAM2 = "file_list"
+private const val ARG_PARAM2 = "file_date"
+private const val ARG_PARAM3 = "file_list"
 
 /**
  * A simple [Fragment] subclass.
@@ -25,6 +27,7 @@ private const val ARG_PARAM2 = "file_list"
 
 class FileFragment : ListFragment() {
     private var fileName: String? = null
+    private var fileDate: String? = null
     private var _binding: FragmentFileBinding? = null
     private var fileArr:Array<out String> ?= null
 
@@ -36,8 +39,14 @@ class FileFragment : ListFragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             fileName = it.getString(ARG_PARAM1)
-            fileArr = it.getStringArray(ARG_PARAM2)
+            fileDate = it.getString(ARG_PARAM2)
+            fileArr = it.getStringArray(ARG_PARAM3)
         }
+
+        //modify top bar
+        val aca = (requireActivity() as AppCompatActivity)
+        aca?.supportActionBar?.title = fileName + " - " + fileDate
+        aca?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         val nvctrl = this.findNavController()
         val callback: OnBackPressedCallback =
@@ -62,8 +71,6 @@ class FileFragment : ListFragment() {
         if(fileList != null) {
             fileList = fileArr?.toCollection(ArrayList()) as ArrayList<String>
         }
-        //set className
-        binding.fileName.text = fileName
 
         //add adapter
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(inflater.context, android.R.layout.simple_list_item_1, fileList)

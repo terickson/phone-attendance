@@ -1,6 +1,7 @@
 package com.dynalias.erickson.phoneattendance.ui.edit
 
 import android.R
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,8 @@ import com.dynalias.erickson.phoneattendance.databinding.FragmentEditBinding
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class EditFragment : ListFragment() {
@@ -58,12 +61,14 @@ class EditFragment : ListFragment() {
         super.onListItemClick(l, v, position, id)
         val  fileName = this.listAdapter?.getItem(position) as String
         Log.i("PhoneAttendance", fileName)
+        val file: File = File(activity?.filesDir, fileName)
+        val lastModDate = SimpleDateFormat("dd MMM YY HH:mm").format(Date(file.lastModified()))
         val rows = activity?.openFileInput(fileName)?.readAsCSV() as List<List<String>>
         var studentData = mutableListOf<String>()
         for(row in rows){
             studentData.add(row.get(0))
         }
-        val action = EditFragmentDirections.actionEditToFile(fileName, studentData.toTypedArray())
+        val action = EditFragmentDirections.actionEditToFile(fileName, lastModDate, studentData.toTypedArray())
         this.findNavController().navigate(action)
     }
 

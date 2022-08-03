@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_home_to_camera"
-            app:destination="@id/navigation_camera" />
+            app:destination="@id/navigation_camera"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -22,7 +24,9 @@
         tools:layout="@layout/camera_layout">
         <action
             android:id="@+id/action_camera_to_absent"
-            app:destination="@id/navigation_absent" />
+            app:destination="@id/navigation_absent"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="true" />
         <argument
             android:name="class_name"
             app:argType="string" />
@@ -54,7 +58,9 @@
         tools:layout="@layout/fragment_edit" >
         <action
             android:id="@+id/action_edit_to_file"
-            app:destination="@id/navigation_file" />
+            app:destination="@id/navigation_file"
+            app:popUpTo="@id/navigation_edit"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -66,10 +72,13 @@
             android:name="file_name"
             app:argType="string" />
         <argument
-            android:name="file_list"
-            app:argType="string[]" />
+            android:name="file_date"
+            app:argType="string" />
         <action
             android:id="@+id/action_back_to_edit"
             app:destination="@id/navigation_edit" />
+        <argument
+            android:name="file_list"
+            app:argType="string[]" />
     </fragment>
 </navigation>

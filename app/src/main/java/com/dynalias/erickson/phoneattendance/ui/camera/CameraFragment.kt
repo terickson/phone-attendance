@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -63,6 +64,10 @@ class CameraFragment : Fragment() {
                 classRoster = rosterArr?.toCollection(ArrayList()) as ArrayList<String>
             }
         }
+        //modify top bar
+        val aca = (requireActivity() as AppCompatActivity)
+        aca?.supportActionBar?.title = className
+        aca?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -89,7 +94,7 @@ class CameraFragment : Fragment() {
 
     private fun setScanText(){
         //Period 1 --- Total: 14 Scans: 10
-        val msg = className + " --- Total: "+ classRoster.size + " Scans: " + absentSet.size
+        val msg = "Total: "+ classRoster.size + " Scans: " + absentSet.size
         val scansInfo: TextView = binding.scansInfo
         scansInfo.text = msg
     }

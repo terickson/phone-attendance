@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.ListFragment
 import androidx.navigation.fragment.findNavController
@@ -42,6 +43,11 @@ class AbsentFragment : ListFragment() {
             absentArr = it.getStringArray(ARG_PARAM2)
         }
 
+        //modify top bar
+        val aca = (requireActivity() as AppCompatActivity)
+        aca?.supportActionBar?.title = "Absent: " + className
+        aca?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
         val nvctrl = this.findNavController()
         val callback: OnBackPressedCallback =
             object : OnBackPressedCallback(true /* enabled by default */) {
@@ -65,8 +71,6 @@ class AbsentFragment : ListFragment() {
         if(absentList != null) {
             absentList = absentArr?.toCollection(ArrayList()) as ArrayList<String>
         }
-        //set className
-        binding.className.text = className
 
         //add adapter
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(inflater.context, android.R.layout.simple_list_item_1, absentList)
