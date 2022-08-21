@@ -46,6 +46,7 @@ class CameraFragment : Fragment() {
     private var rosterArr:Array<out String> ?= null
     private var maxClassId: Int = 0
     private var absentSet = mutableSetOf<String>()
+    private var scanSet = mutableSetOf<Int>()
 
 
 
@@ -95,8 +96,11 @@ class CameraFragment : Fragment() {
     private fun setScanText(){
         //Period 1 --- Total: 14 Scans: 10
         val msg = "Total: "+ classRoster.size + " Scans: " + absentSet.size
+        val scanMsg = "    (" + scanSet.sorted().joinToString(", ") + ")"
         val scansInfo: TextView = binding.scansInfo
+        val scansList: TextView = binding.scansList
         scansInfo.text = msg
+        scansList.text = scanMsg
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -129,7 +133,8 @@ private fun startCamera() {
                             if(barcode.toInt() <= maxClassId) {
                                 val student = classRoster.get(barcode.toInt() - 1)
                                 if (student != null) {
-                                    absentSet.add(student)
+                                    absentSet.add(student + "(" + barcode + ")")
+                                    scanSet.add(barcode.toInt())
                                     setScanText()
                                 }
                             }
